@@ -6,6 +6,7 @@ import { bindAll } from 'lodash';
 import Landing from './views/landing/landing';
 import LoginView from './views/login/login';
 import SignUpView from './views/signup/signup';
+import Dashboard from './views/dashboard/dashboard';
 
 let config = {
     apiKey: "AIzaSyCpQ_x0hf9YySPVz_gQPgEEIsHPuw6L-vo",
@@ -152,6 +153,7 @@ class App extends Component {
         <SignUpView
             signUpCallback={this.signUpCallback}
         />
+        {/*<Dashboard/>*/}
       </div>
     );
   }

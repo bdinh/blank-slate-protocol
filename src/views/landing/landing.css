@@ -1,0 +1,20 @@
+
+
+.landing {
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+#mission {
+    height: 400px;
+}
+
+#mission p {
+    margin:auto;
+}
+
+#for {
+    display: flex;
+    justify-content: space-evenly;
+}
+

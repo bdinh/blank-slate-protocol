@@ -1,0 +1,63 @@
+.App, html, body{
+    height: 100%;
+}
+
+#parent {
+    display: flex;
+    margin-top: 100px;
+}
+
+#right {
+    background-color: aqua;
+    width: 30%;
+    height: 700px;
+}
+
+#root {
+    height: 100%;
+}
+
+#below {
+    display: flex;
+}
+#dashboard {
+    width: 70%;
+    height: 100%
+
+}
+
+#available {
+    height: 500px;
+    background-color: #FF5512;
+}
+
+
+#recent {
+    padding: 10px;
+    left:0;
+    display: flex;
+    justify-content: space-evenly;
+    background-color: #FF5512;
+}
+
+h3 {
+    text-align: left;
+}
+
+#picture {
+    width: 500px;
+    height: 200px;
+    background-color: antiquewhite;
+}
+
+#button{
+    width: 200px;
+    height: 50px;
+    background-color: antiquewhite;
+}
+
+#stack {
+    width: 70%;
+    background-color: #00AA5D;
+    height: 500px;
+}
