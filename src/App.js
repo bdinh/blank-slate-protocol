@@ -3,6 +3,7 @@ import './App.css';
 import Landing from './views/landing/landing';
 import LoginView from './views/login/login';
 import SignUpView from './views/signup/signup';
+import Dashboard from './views/dashboard/dashboard';
 
 class App extends Component {
   render() {
@@ -10,7 +11,8 @@ class App extends Component {
       <div className="App">
         {/*<Landing/>*/}
         {/*<LoginView/>*/}
-        <SignUpView/>
+        {/*<SignUpView/>*/}
+        <Dashboard/>
       </div>
     );
   }
