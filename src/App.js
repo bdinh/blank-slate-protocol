@@ -7,6 +7,7 @@ import Landing from './views/landing/landing';
 import LoginView from './views/login/login';
 import SignUpView from './views/signup/signup';
 import Dashboard from './views/dashboard/dashboard';
+import Detail from './views/detail/detail'
 
 let config = {
     apiKey: "AIzaSyCpQ_x0hf9YySPVz_gQPgEEIsHPuw6L-vo",
@@ -150,10 +151,11 @@ class App extends Component {
       <div className="App">
         {/*<Landing/>*/}
         {/*<LoginView/>*/}
-        <SignUpView
-            signUpCallback={this.signUpCallback}
-        />
+        {/*<SignUpView/>*/}
         {/*<Dashboard/>*/}
+        <Detail/>
+        {/*<SignUpView*/}
+            {/*signUpCallback={this.signUpCallback}/>*/}
       </div>
     );
   }
