@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import NavBar from './../../components/navbar'
 import Footer from './../../components/footer';
+import './landing.css'
 
 export default class Landing extends Component {
     constructor(props) {
@@ -13,9 +14,25 @@ export default class Landing extends Component {
 
         return(
             <div>
-                <NavBar/>
                 <div>
-                    Ani fill in content here
+                    <NavBar/>
+                </div>
+                <div class = "landing">
+                    <div id = "mission">
+                        <p>Mission Statement</p>
+                    </div>
+                    <div id = "for">
+
+                        <div id = "tech_description">
+                            <p>For tech professionals:</p>
+                            <p>blah blah blah blah </p>
+                        </div>
+
+                        <div id = "recruiter_description">
+                            <p>For recruiters:</p>
+                            <p>blah blah blah blah </p>
+                        </div>
+                    </div>
                 </div>
                 <Footer/>
             </div>

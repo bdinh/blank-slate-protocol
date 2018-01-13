@@ -1,247 +1,243 @@
 import React, { Component } from 'react';
+import './App.css';
 import $ from 'jquery';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import '../node_modules/bootstrap/dist/js/bootstrap.min.js.map';
 import { bindAll } from 'lodash';
-import { Redirect, NavLink} from 'react-router-dom';
+import LoginView from './views/Login';
+import SignUpView from './views/SignUp';
+import Dashboard from './views/Dashboard';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import firebase from 'firebase/app';
-import Toggle from 'react-toggle';
-import Select from 'react-select';
-import 'react-select/dist/react-select.css';
+import CreateChannel from './views/CreateChannel';
 
-// Component view that allows the user to create a channel
-export default class CreateChannel extends Component {
+let config = {
+    apiKey: "AIzaSyAVu-yWQVgP-NQMz9xuKxjMJTfdDK5bNKw",
+    authDomain: "react-chat-3c399.firebaseapp.com",
+    databaseURL: "https://react-chat-3c399.firebaseio.com",
+    projectId: "react-chat-3c399",
+    storageBucket: "",
+    messagingSenderId: "132053997914"
+};
+firebase.initializeApp(config);
+
+// Main wrapper component in our application that handles the routing for our application as well
+// as manages top level information in order to pass it on to other props
+class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            createdChannel: false,
-            activeChannel: "general",
-            publicChannel: true,
-            value: []
+            email: "",
+            displayName: "",
+            activeSession: false,
+            userId: "",
+            allUsers: [],
+            errorMessage: "",
+            loginLoading: false,
         };
         bindAll(this, [
-            'handleCreateButton',
-            'createNewChannel',
-            'checkToggle',
-            'handleSelectChange'
-        ])
+            'loginCallback',
+            'signUpCallback',
+            'signOutCallback',
+            'updateUserList',
+            'checkUserAuth'
+        ]);
     }
 
     componentDidMount() {
-        $('#channel-create').prop('disabled', true);
-        this.setState({
-            activeChannel: this.props.activeChannel
-        });
-
+        this.checkUserAuth();
     }
 
-    createNewChannel(event) {
-        let user = firebase.auth().currentUser;
-        let userDisplayName = user.displayName;
-        let userId = user.uid;
 
-        let channelName = $('#channelName').val();
-        let channelPurpose = $('#purposeText').val();
-
-        let channelsRef = firebase.database().ref('channels/');
-        let channelType = this.state.publicChannel ? "public" : "private";
-
-        let insertChannel = {
-            createdBy: {
-                displayName: userDisplayName,
-                userId: userId
-            },
-            description: channelPurpose,
-            name: channelName,
-            timeStamp: Date.now(),
-            type: channelType
-        };
-
-        let newChannelKey = channelsRef.push(insertChannel).key;
-        let membersRef = firebase.database().ref('channels/' + newChannelKey + '/invited/');
-
-        firebase.database().ref('channels/' + newChannelKey + '/').update({
-            id: newChannelKey
-        });
-
-        if (this.state.value.length !== 0) {
-            this.state.value.forEach((member) => {
-                membersRef.push({
-                    displayName: member.label,
-                    userId: member.value,
-                    userEmail: member.email
+    updateUserList() {
+        let usersArray = [];
+        let usersRef = firebase.database().ref('users');
+        usersRef.once('value')
+            .then((snapshot) => {
+                snapshot.forEach((user) => {
+                    let data = user.val();
+                    if (data.userId !== this.state.userId) {
+                        usersArray.push({
+                            label: data.displayName,
+                            value: data.userId,
+                            email: data.userEmail
+                        });
+                    }
+                });
+                this.setState({
+                    allUsers: usersArray
                 });
             });
-        }
+
+    }
 
 
+    componentWillUnmount() {
+        this.authUnregFunc();
+    }
 
-        // Add self to channel members
-        firebase.database().ref('channels/' + newChannelKey + '/members').push({
-            displayName: this.props.displayName,
-            userId: this.props.userId,
-            userEmail: this.props.userEmail
+
+    loginCallback() {
+
+        let email = $('#loginEmail').val();
+        let password = $('#loginPassword').val();
+
+        firebase.auth().signInWithEmailAndPassword(email, password)
+            .then(() => {
+                this.checkUserAuth();
+            })
+            .catch((error) => {
+                this.setState({
+                    errorMessage: error
+                });
+            });
+    }
+
+    checkUserAuth() {
+
+        let gloablThis = this;
+        this.authUnregFunc = firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                let displayName = user.displayName;
+                let email = user.email;
+
+                gloablThis.setState({
+                    activeSession: true,
+                    email: email,
+                    displayName: displayName,
+                    userId: user.uid
+                });
+
+                this.updateUserList();
+            } else {
+                return (<Redirect to='login'/>);
+            }
         });
 
-        let messagesRef = firebase.database().ref('channels/' + newChannelKey + "/messages");
-        messagesRef.push({
-            createdBy: {
-                name: this.props.displayName,
-                id: this.props.userId,
-                email: this.props.userEmail
-            },
-            timeStamp: Date.now(),
-            text: "welcome"
-        });
+    }
 
+    signUpCallback() {
+        let email = $('#createEmail').val();
+        let password = $('#createPassword').val();
+        let displayName = $('#createDisplayName').val();
+
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+            .then(() => {
+                let user = firebase.auth().currentUser;
+
+                user.updateProfile({
+                    displayName: displayName,
+                }).then(() => {
+
+                    let usersRef = firebase.database().ref('users');
+                    usersRef.push({
+                        displayName: user.displayName,
+                        userId: user.uid,
+                        userEmail: user.email
+                    });
+
+                    this.updateUserList();
+
+                    this.setState({
+                        displayName: user.displayName,
+                        userId: user.uid,
+                        email: user.email
+                    });
+
+                }).catch(function(error) {
+                    this.setState({
+                        errorMessage: error
+                    });
+                });
+
+                this.setState({
+                    activeSession: true
+                });
+
+            })
+            .catch((error) => {
+                this.setState({
+                    errorMessage: error
+                });
+            })
+    }
+
+    signOutCallback() {
         this.setState({
-            createdChannel: true,
-            activeChannel: channelName,
+            activeSession: false
         });
-
-        // let redirectUrl = 'channels/' + channelName;
-        // return <Redirect to={'/' + redirectUrl} exact/>
-    }
-
-    handleCreateButton(event) {
-        let channelName = event.target.value;
-        if (channelName.length > 1) {
-            $('.channel-create-button').prop('disabled', false);
-        } else {
-            $('.channel-create-button').prop('disabled', true);
-        }
-    }
-
-    checkToggle(event) {
-        this.setState({
-            publicChannel: event.target.checked
-        });
-    }
-
-    handleSelectChange (value) {
-        this.setState({ value });
-    }
-
-    render() {
-
-        const {
-            activeSession,
-            allUsers,
-        } = this.props;
-
-        if (!activeSession) {
-            return <Redirect to='/' exact/>
-        }
-
-        if (this.state.createdChannel) {
-            return <Redirect to={'/channels/' + this.state.activeChannel} exact/>
-        }
-
-        return (
-            <div>
-                <div className="row input-section">
-                    <div className="col-8 offset-2 col-md-6 offset-md-3 label-container ">
-                        <div className="create-channel-labels">
-                            <p className="create-channel-title">Create a channel</p>
-                            <p className="create-channel-text">Channels are where you can communicate.
-                                They're best when organized around a topic - #leads, for example
-                            </p>
-                        </div>
-                        <div className="form-container">
-                            <div className="form-group">
-                                <div className="toggle-button-container">
-                                    <label>
-                                        <Toggle
-                                            defaultChecked={true}
-                                            icons={{
-                                                checked: "Public",
-                                                unchecked: "Private",
-                                            }}
-                                            value="public"
-                                            onChange={this.checkToggle} />
-                                            <div className="toggle-label-container">
-                                                <p className="toggle-label">
-                                                    {this.state.publicChannel ? "Anyone using the application can view and join this channel."
-                                                        : "This channel can only be joined or viewed by invites"
-                                                    }
-                                                </p>
-                                            </div>
-                                    </label>
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                    <label
-                                        className="form-labels"
-                                        htmlFor="channelName">
-                                        Name <span className="faded-text"> (Name must be without periods or spaces, and shorter than 22 characters)</span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        id="channelName"
-                                        aria-describedby="displayNameHelp"
-                                        placeholder="Enter channel name"
-                                        onChange={this.handleCreateButton}
-                                    />
-                                </div>
-
-                                <div className="form-group form-group-spacing">
-                                    <label className="form-labels"
-                                           htmlFor="purposeText">
-                                        Purpose <span className="faded-text"> (What's this channel about?)</span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        id="purposeText"
-                                        aria-describedby="displayNameHelp"
-                                        placeholder="Enter purpose"
-                                    />
-                                </div>
-                                <div className="form-group form-group-spacing">
-                                    <label className="form-labels"
-                                           htmlFor="purposeText">
-                                        Send invites to: <span className="faded-text"> (Invite your friends!)</span>
-                                    </label>
-                                    <Select
-                                        name="form-invite-user"
-                                        value={this.state.value}
-                                        multi={true}
-                                        disabled={false}
-                                        onChange={this.handleSelectChange}
-                                        removeSelected={true}
-                                        closeOnSelect={false}
-                                        searchable={true}
-                                        placeholder={"Search by name"}
-                                        options={allUsers}
-                                    />
-                                </div>
-                            <div className="create-channel-button-container offset-6">
-                                <NavLink to='/' exact>
-                                    <button
-                                        id="channel-cancel"
-                                        form="create-channel"
-                                        className="btn channel-cancel-button"
-                                        value="channel-cancel"
-                                        >
-                                        Cancel
-                                    </button>
-                                </NavLink>
-                                <button
-                                    id="channel-create"
-                                    form="create-channel"
-                                    className="btn channel-create-button"
-                                    value="channel-create"
-                                    onClick={this.createNewChannel}>
-                                    Create Channel
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
-
-
+        firebase.auth().signOut()
+            .catch(err => console.log(err)); //log any errors for debugging
     }
 
 
+  render() {
+    return (
+
+      <div className="App">
+        <Switch>
+            <Route exact path='/' push render={(routerProps) => (
+                !this.state.activeSession ? <Redirect to='/login'/>
+                :   ( <Dashboard
+                        {...routerProps}
+                        activeSession={this.state.activeSession}
+                        displayName={this.state.displayName}
+                        userId={this.state.userId}
+                        userEmail={this.state.email}
+                        allUsers={this.state.allUsers}
+                        signOutCallback={this.signOutCallback} />)
+            )}/>
+            <Route exact path='/channels' render={(routerProps) => (
+                ( <Dashboard
+                    {...routerProps}
+                    activeSession={this.state.activeSession}
+                    displayName={this.state.displayName}
+                    userId={this.state.userId}
+                    userEmail={this.state.email}
+                    allUsers={this.state.allUsers}
+                    signOutCallback={this.signOutCallback} />)
+            )}/>
+            <Route path='/channels/:channelName' render={(routerProps) => (
+                ( <Dashboard
+                    {...routerProps}
+                    activeSession={this.state.activeSession}
+                    displayName={this.state.displayName}
+                    userEmail={this.state.email}
+                    userId={this.state.userId}
+                    allUsers={this.state.allUsers}
+                    signOutCallback={this.signOutCallback} />)
+            )}/>
+          <Route path='/login' exact render={(routerProps) => (
+              <LoginView
+                  {...routerProps}
+                  loginCallback={this.loginCallback}
+                  activeSession={this.state.activeSession}
+                  errorMessage={this.state.errorMessage}
+              />
+          )}/>
+          <Route path='/join' exact render={(routerProps) => (
+              <SignUpView
+                  {...routerProps}
+                  activeSession={this.state.activeSession}
+                  signUpCallback={this.signUpCallback}
+                  errorMessage={this.state.errorMessage}
+              />
+          )}/>
+          <Route path='/create' exact render={(routerProps) => (
+              <CreateChannel
+                  {...routerProps}
+                  activeSession={this.state.activeSession}
+                  userId={this.state.userId}
+                  displayName={this.state.displayName}
+                  userEmail={this.state.email}
+                  allUsers={this.state.allUsers}
+              /> )
+          }/>
+            <Redirect from='/channel' to='/'/>
+        </Switch>
+      </div>
+    );
+  }
 }
+
+export default App;
