@@ -1,0 +1,33 @@
+html, body, .App, #root, .screen-container {
+    height: 100%;
+}
+
+.screen-container {
+    background-image: url(login.jpeg);
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+}
+
+.login-box {
+    background-color: #FAFAFA;
+    border: 1px solid rgba(0, 0, 0, 0.6);
+    padding: 25px 25px;
+    border-radius: 10px;
+}
+
+.login-button {
+    background-color: #222222;
+    border-radius: 10px;
+}
+
+.email-text {
+    font-size: x-large;
+    font-weight: bolder;
+}
+
+.password-text {
+    font-size: x-large;
+    font-weight: bolder;
+}

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { bindAll } from 'lodash'
+import firebase from 'firebase/app';
 import Toggle from 'react-toggle';
 import './signup.css';
 
@@ -14,8 +15,6 @@ export default class SignUpView extends Component {
         ]);
     }
 
-
-
     handleEventTemp() {
 
     }
@@ -28,7 +27,14 @@ export default class SignUpView extends Component {
     }
 
 
+
+
     render() {
+
+
+        const {
+            signUpCallback
+        } = this.props;
 
 
         return (
@@ -36,29 +42,29 @@ export default class SignUpView extends Component {
                 <div className="form-group">
                     <label
                         className="form-labels"
-                        htmlFor="createDisplayName">
+                        htmlFor="createFirstName">
                         First Name
                     </label>
                     <input
                         type="text"
                         className="form-control"
-                        id="createDisplayName"
-                        aria-describedby="displayNameHelp"
-                        placeholder="Enter Display Name"
+                        id="createFirstName"
+                        aria-describedby="displayFirstNameHelp"
+                        placeholder="Enter First Name"
                     />
                 </div>
                 <div className="form-group">
                     <label
                         className="form-labels"
-                        htmlFor="createDisplayName">
+                        htmlFor="createLastName">
                         Last Name
                     </label>
                     <input
                         type="text"
                         className="form-control"
-                        id="createDisplayName"
-                        aria-describedby="displayNameHelp"
-                        placeholder="Enter Display Name"
+                        id="createLastName"
+                        aria-describedby="displayLastNameHelp"
+                        placeholder="Enter Last Name"
                     />
                 </div>
                 <div className="form-group">
@@ -90,6 +96,7 @@ export default class SignUpView extends Component {
                         <label>
                             <Toggle
                                 defaultChecked={true}
+                                id={"targetToggler"}
                                 // icons={{
                                 //     // checked: "Public",
                                 //     // unchecked: "Private",
@@ -129,7 +136,7 @@ export default class SignUpView extends Component {
                 <div className="form-group-spacing">
                     <button
                         className="btn btn-primary signup-button"
-                        onClick={this.handleEventTemp}
+                        onClick={signUpCallback}
                     >Create Account</button>
                 </div>
             </div>

@@ -132,8 +132,6 @@
     display: inline-block;
 }
 
-/*.toggle-label {*/
-    /*position: absolute;*/
-    /*top: 155px;*/
-    /*left: 150px;*/
-/*}*/
+.toggle-label {
+    padding-bottom: 0px;
+}
