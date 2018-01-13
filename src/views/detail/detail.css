@@ -1,0 +1,50 @@
+.App, html, body{
+    height: 100%;
+}
+
+#parent {
+    display: flex;
+    margin-top: 100px;
+    height: 100%;
+}
+
+#information {
+    width: 20%;
+    height: 800px;
+    background-color: #FAFAFA;
+}
+
+#profile{
+    margin-top: 50px;
+    width: 70%;
+    height: 800px;
+    background-color: #FF5512;
+}
+
+#decision {
+    display:flex;
+    width: 10%;
+    height: 800px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.decision-button {
+    border-radius: 8px;
+    width: 30px;
+    height: 100px;
+}
+
+#green {
+    background-color: #00AA5D;
+}
+
+#yellow {
+    background-color: yellow;
+}
+
+#red {
+    background-color: #FF5512;
+}
+

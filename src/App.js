@@ -4,6 +4,7 @@ import Landing from './views/landing/landing';
 import LoginView from './views/login/login';
 import SignUpView from './views/signup/signup';
 import Dashboard from './views/dashboard/dashboard';
+import Detail from './views/detail/detail'
 
 class App extends Component {
   render() {
@@ -12,7 +13,8 @@ class App extends Component {
         {/*<Landing/>*/}
         {/*<LoginView/>*/}
         {/*<SignUpView/>*/}
-        <Dashboard/>
+        {/*<Dashboard/>*/}
+        <Detail/>
       </div>
     );
   }
