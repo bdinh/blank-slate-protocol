@@ -3,7 +3,7 @@ html, body, .App, #root, .screen-container {
 }
 
 .screen-container {
-    background-image: url(login.jpeg);
+    background-image: url(back-image.png);
     background-position: center;
     background-size: cover;
     display: flex;
