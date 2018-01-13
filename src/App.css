@@ -22,6 +22,18 @@
   font-size: large;
 }
 
+#nav {
+  position:relative;
+  min-height: 100px;
+}
+
+footer {
+  position:absolute;
+  bottom: 0;
+  width:100%;
+}
+
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
