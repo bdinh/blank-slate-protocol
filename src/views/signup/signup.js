@@ -1,18 +1,30 @@
 import React, { Component } from 'react';
+import { bindAll } from 'lodash'
 import Toggle from 'react-toggle';
+import './signup.css';
 
 export default class SignUpView extends Component {
     constructor(props) {
         super(props);
         this.state =  {
-            organization: false
-        }
+            organization: true
+        };
+        bindAll(this, [
+            'checkToggle'
+        ]);
     }
 
 
 
     handleEventTemp() {
 
+    }
+
+    checkToggle(event) {
+        console.log(event.target.checked);
+        this.setState({
+            organization: event.target.checked
+        })
     }
 
 
@@ -78,24 +90,41 @@ export default class SignUpView extends Component {
                         <label>
                             <Toggle
                                 defaultChecked={true}
-                                icons={{
-                                    checked: "Public",
-                                    unchecked: "Private",
-                                }}
+                                // icons={{
+                                //     // checked: "Public",
+                                //     // unchecked: "Private",
+                                // }}
+                                icons={false}
                                 value="public"
-                                onChange={this.handleEventTemp()} />
+                                onChange={this.checkToggle} />
                             <div className="toggle-label-container">
                                 <p className="toggle-label">
-                                    {this.state.organization ? "No"
-                                        : "Yes"
+                                    {this.state.organization ? "I'm looking to hire"
+                                        : "I'm looking to get hired"
                                     }
                                 </p>
                             </div>
                         </label>
                     </div>
                 </div>
-
-
+                {
+                    this.state.organization ? (
+                        <div className="form-group">
+                            <label
+                                className="form-labels"
+                                htmlFor="createOrganizationName">
+                                Organization
+                            </label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="createOrganizationName"
+                                aria-describedby="organizationNameHelp"
+                                placeholder="Organization"
+                            />
+                        </div>
+                    ) : ("")
+                }
 
                 <div className="form-group-spacing">
                     <button
