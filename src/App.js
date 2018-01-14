@@ -153,9 +153,9 @@ class App extends Component {
         {/*<LoginView/>*/}
         {/*<SignUpView/>*/}
         {/*<Dashboard/>*/}
-        <Detail/>
-        {/*<SignUpView*/}
-            {/*signUpCallback={this.signUpCallback}/>*/}
+        {/*<Detail/>*/}
+        <SignUpView
+            signUpCallback={this.signUpCallback}/>
       </div>
     );
   }

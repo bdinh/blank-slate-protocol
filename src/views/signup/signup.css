@@ -134,6 +134,9 @@
 
 .toggle-label {
     padding-bottom: 0px;
+    position: relative;
+    top: -8px;
+    left: 10px;
 }
 
 .su-screen-container {
@@ -153,4 +156,7 @@
     border-radius: 10px;
 }
 
+.btn-primary {
+    background-color: #222222;
+}
 

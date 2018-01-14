@@ -108,7 +108,7 @@ export default class SignUpView extends Component {
                                         value="public"
                                         onChange={this.checkToggle} />
                                     <div className="toggle-label-container">
-                                        <p className="toggle-label">
+                                        <p className="toggle-label" class="toggle-label">
                                             {this.state.organization ? "I'm looking to hire"
                                                 : "I'm looking to get hired"
                                             }
