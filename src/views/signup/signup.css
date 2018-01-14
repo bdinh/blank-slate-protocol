@@ -37,7 +37,7 @@
 }
 
 .react-toggle-track {
-    width: 100px;
+    width: 50px;
     height: 30px;
     padding: 0;
     border-radius: 30px;
@@ -124,7 +124,7 @@
 }
 
 .react-toggle--checked .react-toggle-thumb {
-    left: 70px;
+    left: 21px;
     border-color: #00AA5D;
 }
 
@@ -134,4 +134,29 @@
 
 .toggle-label {
     padding-bottom: 0px;
+    position: relative;
+    top: -8px;
+    left: 10px;
 }
+
+.su-screen-container {
+    background-image: url(back-image.png);
+    background-position: center;
+    background-size: cover;
+    height: 100%;
+    display: flex;
+    align-items: center;
+
+}
+
+.signup-container {
+    background-color: #FAFAFA;
+    border: 1px solid rgba(0, 0, 0, 0.6);
+    padding: 25px 25px;
+    border-radius: 10px;
+}
+
+.btn-primary {
+    background-color: #222222;
+}
+
