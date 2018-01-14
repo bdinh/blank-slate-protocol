@@ -149,11 +149,11 @@ class App extends Component {
     render() {
     return (
       <div className="App">
-        {/*<Landing/>*/}
+        <Landing/>
         {/*<LoginView/>*/}
         {/*<SignUpView/>*/}
         {/*<Dashboard/>*/}
-        <Detail/>
+        {/*<Detail/>*/}
         {/*<SignUpView*/}
             {/*signUpCallback={this.signUpCallback}/>*/}
       </div>

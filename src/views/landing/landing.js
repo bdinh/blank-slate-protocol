@@ -13,24 +13,31 @@ export default class Landing extends Component {
     render() {
 
         return(
-            <div>
+            <div id = "parent">
                 <div>
                     <NavBar/>
                 </div>
                 <div class = "landing">
                     <div id = "mission">
-                        <p>Mission Statement</p>
+                        <p>"It's what is on the inside that matters."
+                            <br/> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;-Someone probably
+                        </p>
                     </div>
-                    <div id = "for">
+                    <div id = "stakeholders">
 
                         <div id = "tech_description">
-                            <p>For tech professionals:</p>
-                            <p>blah blah blah blah </p>
+                            <h2>Looking for a job?</h2>
+                            <p> Mask your identity to prevent any bias in the hiring process</p>
+                            <br/>
+                            <div id = "applicant_button"  class = "signup_button"></div>
                         </div>
 
                         <div id = "recruiter_description">
-                            <p>For recruiters:</p>
-                            <p>blah blah blah blah </p>
+                            <h2>Looking to hire someone?</h2>
+                            <p> Ensure a completely unbiased hiring process</p>
+                            <br/>
+                            <div id = "recruiter_button" class = "signup_button"></div>
                         </div>
                     </div>
                 </div>
